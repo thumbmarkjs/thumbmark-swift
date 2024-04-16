@@ -1,0 +1,8 @@
+.DS_Store
+*.xcuserstate
+*.xcuserstate
+*.xcbkptlist
+*.xcuserdata
+*.xcuserdatad
+**/xcuserdata/*
+xcuserdata/
