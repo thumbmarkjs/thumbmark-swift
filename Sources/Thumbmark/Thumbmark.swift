@@ -55,7 +55,7 @@ public extension Thumbmark {
                                 languageCode: Locale.current.languageCode,
                                 regionCode: Locale.current.regionCode,
                                 availableRegionCodes: Locale.isoRegionCodes.count,
-                                calendarIdentifier: Locale.current.calendar.identifier.debugDescription,
+                                calendarIdentifier: String(describing: Locale.current.calendar.identifier),
                                 timezone: TimeZone.current.identifier,
                                 availableTimezones: TimeZone.knownTimeZoneIdentifiers.count,
                                 availableKeyboards: UserDefaults.standard.array(forKey: "AppleKeyboards")?.count ?? 0,
