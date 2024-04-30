@@ -31,7 +31,7 @@ extension ComponentVolatility: Comparable {
     }
 
     public static func > (lhs: ComponentVolatility, rhs: ComponentVolatility) -> Bool {
-        return lhs.rawValue < rhs.rawValue
+        return lhs.rawValue > rhs.rawValue
     }
 
     public static func <= (lhs: ComponentVolatility, rhs: ComponentVolatility) -> Bool {

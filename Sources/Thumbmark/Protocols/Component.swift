@@ -16,7 +16,7 @@ protocol Component {
 
 extension Component {
     static func withVolatilityThreshold(_ volatility: ComponentVolatility) -> ComponentType? {
-        guard volatility <= self.volatility else { return nil }
+        guard self.volatility <= volatility else { return nil }
         return component
     }
 }

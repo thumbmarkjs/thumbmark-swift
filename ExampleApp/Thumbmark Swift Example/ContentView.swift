@@ -20,12 +20,14 @@ struct ContentView: View {
                     RowContent(title: "ID", subtitle: id)
                     RowContent(title: "Persistent ID", subtitle: persistentId)
                 }
-                Section {
-                    ForEach(fingerprint?.captureDevices ?? [], id: \.id) { value in
-                        RowContent(title: value.name, subtitle: "ID: \(value.id)\nModel: \(value.modelId)\nPosition: \(value.position)")
+                if fingerprint?.captureDevices?.isEmpty == false {
+                    Section {
+                        ForEach(fingerprint?.captureDevices ?? [], id: \.id) { value in
+                            RowContent(title: value.name, subtitle: "ID: \(value.id)\nModel: \(value.modelId)\nPosition: \(value.position)")
+                        }
+                    } header: {
+                        Text("Capture devices")
                     }
-                } header: {
-                    Text("Capture devices")
                 }
                 Section {
                     RowContent(title: "Total cores", subtitle: fingerprint?.processor?.processorCount.description)
@@ -87,9 +89,9 @@ struct ContentView: View {
                 }
             }
         }.task {
+            fingerprint = await Thumbmark.instance.fingerprint
             id = await Thumbmark.instance.id ?? "N/A"
             persistentId = await Thumbmark.instance.persistentId()?.uuidString ?? "N/A"
-            fingerprint = await Thumbmark.instance.fingerprint
         }
     }
 
