@@ -19,12 +19,41 @@ public actor Thumbmark {
 
     // MARK: - Data
     var components: [ThumbmarkComponent.Type]?
+    var volatility: ComponentVolatility = .high
 
     // MARK: - Helper Functions
     /// Additional values that can be used to compute the ``fingerprint`` value. All values must conform to the ``ThumbmarkComponent`` protocol.
     /// - Parameter value: Array of ``ThumbmarkComponent`` values.
     public func setAdditionalComponents(_ value: [ThumbmarkComponent.Type]?) {
         components = value
+    }
+
+    /// Sets additional values that can be used to compute the ``fingerprint`` value. All values must conform to the ``ThumbmarkComponent`` protocol.
+    /// - Parameters:
+    ///   - value: Array of ``ThumbmarkComponent`` values.
+    ///   - completion: Void block called when operation has finished
+    nonisolated public func setAdditionalComponents(_ value: [ThumbmarkComponent.Type]?, withCompletion completion: (() -> Void)? = nil) {
+        Task {
+            await setAdditionalComponents(value)
+            completion?()
+        }
+    }
+
+    /// Sets the accepted level of "volatility" that will be used when producing id's and fingerprints
+    /// - Parameter value: ``ComponentVolatility`` preset
+    public func setVolatility(_ value: ComponentVolatility) {
+        volatility = value
+    }
+    
+    /// Sets the accepted level of "volatility" that will be used when producing id's and fingerprints
+    /// - Parameters:
+    ///   - value: ``ComponentVolatility`` preset
+    ///   - completion: Void block called when operation has finished
+    nonisolated public func setVolatility(_ value: ComponentVolatility, withCompletion completion: (() -> Void)? = nil) {
+        Task {
+            await setVolatility(value)
+            completion?()
+        }
     }
 }
 
@@ -39,17 +68,8 @@ public extension Thumbmark {
         }
     }
 
-    /// Returns a strongly-typed object representing the current devices known parameters, allowing the highest level of volatility.
+    /// Returns a strongly-typed object representing the current devices known parameters, allowing the specified level of volatility, by default this is set to `.high`.
     var fingerprint: Fingerprint {
-        get async {
-            return fingerprint(withVolatilityThreshold: .high)
-        }
-    }
-
-    /// Returns
-    /// - Parameter volatility: Desired level of ``ComponentVolatility``
-    /// - Returns: Returns a strongly-typed object representing the current devices known parameters, allowing the specified level of volatility.
-    func fingerprint(withVolatilityThreshold volatility: ComponentVolatility) -> Fingerprint {
         let captureDevices = CaptureDevicesComponent.withVolatilityThreshold(volatility)
         let processor = ProcessorComponent.withVolatilityThreshold(volatility)
         let device = DeviceComponent.withVolatilityThreshold(volatility)
@@ -65,7 +85,7 @@ public extension Thumbmark {
                            accessibility: accessibility,
                            locality: locality,
                            communication: communication,
-                           components: componentsMap(withVolatilityThreshold: volatility))
+                           components: componentsMap)
     }
 }
 
@@ -77,7 +97,7 @@ public extension Thumbmark {
             return await id(using: SHA256.self)
         }
     }
-    
+
     /// Exposes a SHA256 hashed representation of the ``fingerprint`` property, via the provided callback.
     /// - Parameter completion: Escaping callback, exposes a ``String`` value.
     nonisolated func id(withCompletion completion: @escaping (String?) -> Void) {
@@ -86,14 +106,14 @@ public extension Thumbmark {
             completion(value)
         }
     }
-    
+
     /// Retrieve a hashed representation of the ``fingerprint`` property, using the specified hashing algorithm.
     /// - Parameter hashFunction: Algorithm to be used for hasing.
     /// - Returns: Returns a  hashed representation of the ``fingerprint`` property, using the specified hashing algorithm.
     func id(using hashFunction: any HashFunction.Type) async -> String? {
         return await id(using: hashFunction, withFingerprint: fingerprint)
     }
-    
+
     /// Exposes a hashed representation of the ``fingerprint`` property, using the specified hashing algorithm, via the provided callback.
     /// - Parameters:
     ///   - hashFunction: Algorithm to be used for hasing.
@@ -104,7 +124,7 @@ public extension Thumbmark {
             completion(value)
         }
     }
-    
+
     /// Retrieve a hashed representation of the ``fingerprint`` property passed into the function, using the specified hashing algorithm.
     /// - Parameters:
     ///   - hashFunction: Algorithm to be used for hasing.
@@ -118,7 +138,7 @@ public extension Thumbmark {
         let hashed = hashFunction.hash(data: data)
         return hashed.compactMap { String(format: "%02x", $0) }.joined()
     }
-    
+
     /// Exposes a hashed representation of the ``fingerprint`` property passed into the function, using the specified hashing algorithm, via the provided callback.
     /// - Parameters:
     ///   - hashFunction: Algorithm to be used for hasing.
@@ -130,7 +150,7 @@ public extension Thumbmark {
             completion(value)
         }
     }
-    
+
     /// UUID value, persisted to the keychain during "first launch", and subsequently retrieved thereafter.
     /// Persists between app installs, uninstalls and re-installs aswell as factory resets when iCloud keychain is enabled.
     /// - Parameter days: Number of days that the value should be valid
@@ -138,7 +158,7 @@ public extension Thumbmark {
     func persistentId(withExpiry days: Int? = nil) -> UUID? {
         return KeychainHelper.persistentId(withExpiry: days)
     }
-    
+
     /// UUID value, persisted to the keychain during "first launch", and subsequently retrieved thereafter.
     /// Persists between app installs, uninstalls and re-installs aswell as factory resets when iCloud keychain is enabled.
     /// - Parameter days: Number of days that the value should be valid
@@ -151,9 +171,9 @@ public extension Thumbmark {
 
 // MARK: - Private Data Helpers
 private extension Thumbmark {
-    func componentsMap(withVolatilityThreshold volatility: ComponentVolatility) -> [String: [String: String]] {
+    var componentsMap: [String: [String: String]] {
         var value: [String: [String: String]] = [:]
-        for component in self.components?.filter({ $0.volatility <= volatility }) ?? [] {
+        for component in self.components?.filter({ $0.volatility <= self.volatility }) ?? [] {
             value[component.key] = component.values
         }
         return value
