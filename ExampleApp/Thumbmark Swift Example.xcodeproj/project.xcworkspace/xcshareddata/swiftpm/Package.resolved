@@ -2,12 +2,21 @@
   "originHash" : "ac14003b8810e50867f73e77b5d256daff86ea1790d5821dcd92b8959bcf1eda",
   "pins" : [
     {
+      "identity" : "keychainaccess",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
+      }
+    },
+    {
       "identity" : "thumbmark-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/thumbmarkjs/thumbmark-swift",
       "state" : {
-        "revision" : "fec1a04b743c49d7dea8251f27d758859ff49569",
-        "version" : "0.1.0"
+        "branch" : "release/v1",
+        "revision" : "074e7d81cac7ef908406f87e3a48b4abcc7fd58b"
       }
     }
   ],
