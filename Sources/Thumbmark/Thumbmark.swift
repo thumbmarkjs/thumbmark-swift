@@ -133,8 +133,10 @@ public extension Thumbmark {
     
     /// UUID value, persisted to the keychain during "first launch", and subsequently retrieved thereafter.
     /// Persists between app installs, uninstalls and re-installs aswell as factory resets when iCloud keychain is enabled.
-    var persistentId: UUID? {
-        return KeychainHelper.persistentId
+    /// - Parameter days: Number of days that the value should be valid
+    /// - Returns: ``UUID`` value
+    func persistentId(withExpiry days: Int? = nil) -> UUID? {
+        return KeychainHelper.persistentId(withExpiry: days)
     }
 }
 
