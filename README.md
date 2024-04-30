@@ -30,7 +30,7 @@ Device identifiers are hashed, this means that they can not be converted back to
 ```swift
 import Thumbmark
 
-let identifier: String? = Thumbmark.instance.id
+let identifier: String? = await Thumbmark.instance.id
 ```
 
 If you have alternative hashing requirements, you can pass in your own hasher as follows (in the example below we're using `Insecure.MD5.self` however the function takes any value conforming to `any HashFunction.Type`):
@@ -38,7 +38,7 @@ If you have alternative hashing requirements, you can pass in your own hasher as
 ```swift
 import Thumbmark
 
-let identifier: String? = Thumbmark.instance.id(using: Insecure.MD5.self)
+let identifier: String? = await Thumbmark.instance.id(using: Insecure.MD5.self)
 ```
 
 ### Device fingerprint
@@ -56,7 +56,15 @@ The persistent identifier is a persistent UUID that is stored in the keychain th
 ```swift
 import Thumbmark
 
-let persistentId: UUID = Thumbmark.instance.persistentId
+let persistentId: UUID = Thumbmark.instance.persistentId()
+```
+
+You can also specify that the persistent identifier should be recomputed every X days. The code below will produce a new `persistentIdentifier` value every 30 days.
+
+```swift
+import Thumbmark
+
+let persistentId: UUID = Thumbmark.instance.persistentId(withExpiry: 30)
 ```
 
 ## Value Peristence
@@ -64,13 +72,13 @@ Each of the the identifier values above have slightly different levels of persis
 |Value       |Reboot       |Factory Reset       |Delete/Reinstall App       |New Device       |
 |---    |:---:    |:---:    |:---:    |:---:    |
 |Device identifier       |✅       |✅       |✅       |⚠️       |
-|Persistent identifier       |✅       |❌       |✅       |⚠️       |
+|Persistent identifier       |✅       |⚠️       |✅       |⚠️       |
 
 ⚠️ = This is only sometimes true. For example, the value may only be persistent if the user has iCloud keychain enabled AND has added the same Apple ID to the new device as was on the old device OR has restored/transferred all settings/files from their old device to the new device.
 
 The device identifier is reliant on both user and system settings, along with known hardware and software properties. This value uses the concept of entropy to come to a value that is likely to be different across many invocations. This value is extremely useful for when you want to understand an array of devices that a particular user might be using over time. This value is expected to change over time when users update their device or change certain system settings.
 
-The persistent identifier is much more static, however does not persist beyond a factory reset. It relies purely on the keychain to come to a conclusive value. If a factory reset is performed the keychain is wiped and subsequently, a new value will be returned.
+The persistent identifier is much more static, however may not persist beyond a factory reset. It relies purely on the keychain to come to a conclusive value. If a factory reset is performed the keychain is wiped and subsequently, a new value will be returned, if the user did not have the keychain backed up and restored.
 
 ## Requirements
 - iOS 13.0+

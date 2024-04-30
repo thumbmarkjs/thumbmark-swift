@@ -80,7 +80,7 @@ public extension Thumbmark {
     
     /// Exposes a SHA256 hashed representation of the ``fingerprint`` property, via the provided callback.
     /// - Parameter completion: Escaping callback, exposes a ``String`` value.
-    func id(withCompletion completion: @escaping (String?) -> Void) {
+    nonisolated func id(withCompletion completion: @escaping (String?) -> Void) {
         Task {
             let value = await id
             completion(value)
@@ -98,7 +98,7 @@ public extension Thumbmark {
     /// - Parameters:
     ///   - hashFunction: Algorithm to be used for hasing.
     ///   - completion: Escaping callback, exposes a ``String`` value.
-    func id(using hashFunction: any HashFunction.Type, withCompletion completion: @escaping (String?) -> Void) {
+    nonisolated func id(using hashFunction: any HashFunction.Type, withCompletion completion: @escaping (String?) -> Void) {
         Task {
             let value = await id(using: hashFunction, withFingerprint: fingerprint)
             completion(value)
@@ -124,7 +124,7 @@ public extension Thumbmark {
     ///   - hashFunction: Algorithm to be used for hasing.
     ///   - fingerprint: Fingerprint object to be hashed.
     ///   - completion: Escaping callback, exposes a ``String`` value.
-    func id(using hashFunction: any HashFunction.Type, withFingerprint fingerprint: Fingerprint, andCompletion completion: @escaping (String?) -> Void) {
+    nonisolated func id(using hashFunction: any HashFunction.Type, withFingerprint fingerprint: Fingerprint, andCompletion completion: @escaping (String?) -> Void) {
         Task {
             let value = await id(using: hashFunction, withFingerprint: fingerprint)
             completion(value)
@@ -137,6 +137,15 @@ public extension Thumbmark {
     /// - Returns: ``UUID`` value
     func persistentId(withExpiry days: Int? = nil) -> UUID? {
         return KeychainHelper.persistentId(withExpiry: days)
+    }
+    
+    /// UUID value, persisted to the keychain during "first launch", and subsequently retrieved thereafter.
+    /// Persists between app installs, uninstalls and re-installs aswell as factory resets when iCloud keychain is enabled.
+    /// - Parameter days: Number of days that the value should be valid
+    ///   - completion: Escaping callback, exposes an optional``UUID`` value.
+    nonisolated func persistentId(withExpiry days: Int? = nil, andCompletion completion: @escaping (UUID?) -> Void) {
+        let value = KeychainHelper.persistentId(withExpiry: days)
+        completion(value)
     }
 }
 
