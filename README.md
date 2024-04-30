@@ -47,7 +47,7 @@ A device fingerprint is a strongly typed object, consisting of known hardware an
 ```swift
 import Thumbmark
 
-let fingerprint: Fingerprint = Thumbmark.instance.fingerprint
+let fingerprint: Fingerprint = await Thumbmark.instance.fingerprint
 ```
 
 ### Persistent identifier
@@ -56,7 +56,7 @@ The persistent identifier is a persistent UUID that is stored in the keychain th
 ```swift
 import Thumbmark
 
-let persistentId: UUID = Thumbmark.instance.persistentId()
+let persistentId: UUID = await Thumbmark.instance.persistentId()
 ```
 
 You can also specify that the persistent identifier should be recomputed every X days. The code below will produce a new `persistentIdentifier` value every 30 days.
@@ -64,7 +64,7 @@ You can also specify that the persistent identifier should be recomputed every X
 ```swift
 import Thumbmark
 
-let persistentId: UUID = Thumbmark.instance.persistentId(withExpiry: 30)
+let persistentId: UUID = await Thumbmark.instance.persistentId(withExpiry: 30)
 ```
 
 ## Value Peristence
