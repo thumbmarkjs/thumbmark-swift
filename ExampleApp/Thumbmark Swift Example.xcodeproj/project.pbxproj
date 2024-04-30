@@ -369,8 +369,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/thumbmarkjs/thumbmark-swift";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				kind = revision;
+				revision = c598fed57ebf94a21fd680d62a16f20d4600af99;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

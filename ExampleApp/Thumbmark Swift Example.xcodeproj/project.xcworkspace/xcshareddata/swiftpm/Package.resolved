@@ -6,7 +6,6 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
       "state" : {
-        "branch" : "master",
         "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
       }
     },
@@ -15,8 +14,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/thumbmarkjs/thumbmark-swift",
       "state" : {
-        "branch" : "release/v1",
-        "revision" : "074e7d81cac7ef908406f87e3a48b4abcc7fd58b"
+        "revision" : "c598fed57ebf94a21fd680d62a16f20d4600af99"
       }
     }
   ],
