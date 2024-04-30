@@ -8,12 +8,12 @@
 import Foundation
 
 public struct Fingerprint: Codable {
-    public var captureDevices: [CaptureDevice]
-    public var processor: Processor
-    public var device: Device
-    public var memory: Memory
-    public var accessibility: Accessibility
-    public var locality: Locality
-    public var communication: Communication
-    public var components: [String: [String: String]]
+    public var captureDevices: [CaptureDevice]?
+    public var processor: Processor?
+    public var device: Device?
+    public var memory: Memory?
+    public var accessibility: Accessibility?
+    public var locality: Locality?
+    public var communication: Communication?
+    public var components: [String: [String: String]]?
 }

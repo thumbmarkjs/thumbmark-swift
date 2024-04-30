@@ -14,7 +14,7 @@ struct ContentView: View {
             List {
                 Section {
                     RowContent(title: "ID", subtitle: Thumbmark.instance.id)
-                    RowContent(title: "Vendor ID", subtitle: Thumbmark.instance.vendorId?.uuidString)
+                    RowContent(title: "Persistent ID", subtitle: Thumbmark.instance.persistentId?.uuidString)
                 }
                 Section {
                     ForEach(Thumbmark.instance.fingerprint.captureDevices, id: \.id) { value in

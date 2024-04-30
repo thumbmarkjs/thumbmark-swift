@@ -7,11 +7,19 @@
 
 import UIKit
 
-extension UIDevice {
-    /// ``Int`` value representing the overall disk space (not available) of the device.
-    var totalDiskSpace: Int {
-        guard let systemAttributes = try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String),
-            let space = (systemAttributes[FileAttributeKey.systemSize] as? NSNumber)?.intValue else { return 0 }
-        return space
+struct DeviceComponent: Component {
+    typealias ComponentType = Device
+
+    static var component: Device {
+        return Device(machine: SysCtl.model,
+                      model: SysCtl.machine,
+                      hostName: SysCtl.hostName,
+                      deviceName: UIDevice.current.name,
+                      osVersion: SysCtl.osVersion,
+                      osRelease: SysCtl.osRelease)
+    }
+    
+    static var volatility: ComponentVolatility {
+        return .high
     }
 }

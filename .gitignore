@@ -6,3 +6,4 @@
 *.xcuserdatad
 **/xcuserdata/*
 xcuserdata/
+.swiftpm
