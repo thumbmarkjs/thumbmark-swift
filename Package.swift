@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/kishikawakatsumi/KeychainAccess", branch: "master"),
+        .package(url: "https://github.com/kishikawakatsumi/KeychainAccess", revision: "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
