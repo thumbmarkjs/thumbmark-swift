@@ -19,7 +19,7 @@ public enum ComponentVolatility: Int, CaseIterable {
     case medium = 1
 
     /// Component is extremely unstable and values are likely to be extremely fragile.
-    /// For example, device metrics are marked as `high`as it is very likely that
+    /// For example, device metrics are marked as `high` as it is very likely that
     /// a user will update their device at some point, which would change this value.
     case high = 2
 }
