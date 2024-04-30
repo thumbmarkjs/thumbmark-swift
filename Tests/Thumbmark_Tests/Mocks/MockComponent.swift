@@ -17,4 +17,5 @@ struct MockComponent: Codable {
 extension MockComponent: ThumbmarkComponent {
     static var key: String { return "mockComponent"}
     static var values: [String : String] = ["value": value]
+    static var volatility: ComponentVolatility { return .low }
 }

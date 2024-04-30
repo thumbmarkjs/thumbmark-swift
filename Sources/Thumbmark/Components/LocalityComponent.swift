@@ -7,18 +7,24 @@
 
 import Foundation
 
-public extension Locale {
-    var twentyFourHourTimeEnabled: Bool {
-        let dateFormat = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: self)
-        return dateFormat?.range(of: "a") == nil
-    }
+struct LocalityComponent: Component {
+    typealias ComponentType = Locality
 
-    var temperatureUnit: UnitTemperature {
-        let units: [UnitTemperature] = [.celsius, .fahrenheit, .kelvin]
-        let measurement = Measurement(value: 37, unit: UnitTemperature.celsius)
-        let temperatureString = MeasurementFormatter().string(from: measurement)
-        let matchedUnit = units.first { temperatureString.contains($0.symbol) }
-        if let matchedUnit = matchedUnit { return matchedUnit }
-        return usesMetricSystem ? .celsius : .fahrenheit
+    static var component: Locality {
+        return Locality(identifier: Locale.current.identifier,
+                        languageCode: Locale.current.languageCode,
+                        regionCode: Locale.current.regionCode,
+                        availableRegionCodes: Locale.isoRegionCodes.count,
+                        calendarIdentifier: String(describing: Locale.current.calendar.identifier),
+                        timezone: TimeZone.current.identifier,
+                        availableTimezones: TimeZone.knownTimeZoneIdentifiers.count,
+                        availableKeyboards: UserDefaults.standard.array(forKey: "AppleKeyboards")?.count ?? 0,
+                        twentyFourHourTimeEnabled: Locale.current.twentyFourHourTimeEnabled,
+                        temperatureUnit: Locale.current.temperatureUnit.symbol,
+                        usesMetricSystem: Locale.current.usesMetricSystem)
+    }
+    
+    static var volatility: ComponentVolatility {
+        return .medium
     }
 }

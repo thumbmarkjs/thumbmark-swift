@@ -64,6 +64,6 @@ struct MockFingerprint {
     
     /// The mocked fingerprint above should always return this value when hashed via ``Thumbmark.instance.id(using:withFingerprint:)``
     static var expectedId: String {
-        return "9086c4282ca8d9db1b78428db175652ba96471c00147bbf7c35b165f69eb3394"
+        return "b3af821767efe443821ecbc1a1b3c3c2ad5a8d49b701e07d214910115c9a8c73"
     }
 }

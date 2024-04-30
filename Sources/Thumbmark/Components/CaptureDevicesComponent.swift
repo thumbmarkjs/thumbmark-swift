@@ -6,35 +6,16 @@
 //
 
 import AVKit
+import Foundation
 
-public extension AVCaptureDevice {
-    /// Returns an array of ``AVCaptureDevice`` values, representing all video cameras on the current device.
-    static var videoCaptureDevices: [AVCaptureDevice] {
-        #if os(iOS)
-            let session = AVCaptureDevice.DiscoverySession(
-                deviceTypes: [.builtInWideAngleCamera, .builtInTelephotoCamera],
-                mediaType: .video,
-                position: .unspecified)
-        #elseif os(macOS)
-            let videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(
-                deviceTypes: [.builtInWideAngleCamera],
-                mediaType: .video,
-                position: .unspecified)
-        #endif
-        return session.devices
-    }
+struct CaptureDevicesComponent: Component {
+    typealias ComponentType = [CaptureDevice]
 
-    /// Returns an array of ``AVCaptureDevice`` values, representing all built-in microphones on the current device.
-    static var audioCaptureDevices: [AVCaptureDevice] {
-        let session = AVCaptureDevice.DiscoverySession(
-            deviceTypes: [.builtInMicrophone],
-            mediaType: .audio,
-            position: .unspecified)
-        return session.devices
+    static var component: [CaptureDevice] {
+        return AVCaptureDevice.videoAndAudioCaptureDevices.map({ CaptureDevice(from: $0) })
     }
     
-    /// Returns an array of ``AVCaptureDevice`` values, representing all video cameras AND all built-in microphones on the current device.
-    static var videoAndAudioCaptureDevices: [AVCaptureDevice] {
-        return videoCaptureDevices + audioCaptureDevices
+    static var volatility: ComponentVolatility {
+        return .low
     }
 }
