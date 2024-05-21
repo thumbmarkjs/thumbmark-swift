@@ -10,7 +10,7 @@ import MessageUI
 
 /// Actor bound class which exposes core ``Thumbmark`` functionality and properties.
 /// This class is inherently thread-safe by way of being an actor. All property access is, in one way or another, thread-safe.
-public actor Thumbmark {
+@MainActor public class Thumbmark {
     private init() { }
 
     // MARK: - Singleton
@@ -155,7 +155,7 @@ public extension Thumbmark {
     /// Persists between app installs, uninstalls and re-installs aswell as factory resets when iCloud keychain is enabled.
     /// - Parameter days: Number of days that the value should be valid
     /// - Returns: ``UUID`` value
-    func persistentId(withExpiry days: Int? = nil) -> UUID? {
+    func persistentId(withExpiry days: Int? = nil) -> UUID {
         return KeychainHelper.persistentId(withExpiry: days)
     }
 
@@ -163,7 +163,7 @@ public extension Thumbmark {
     /// Persists between app installs, uninstalls and re-installs aswell as factory resets when iCloud keychain is enabled.
     /// - Parameter days: Number of days that the value should be valid
     ///   - completion: Escaping callback, exposes an optional``UUID`` value.
-    nonisolated func persistentId(withExpiry days: Int? = nil, andCompletion completion: @escaping (UUID?) -> Void) {
+    nonisolated func persistentId(withExpiry days: Int? = nil, andCompletion completion: @escaping (UUID) -> Void) {
         let value = KeychainHelper.persistentId(withExpiry: days)
         completion(value)
     }
