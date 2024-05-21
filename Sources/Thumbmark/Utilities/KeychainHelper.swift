@@ -6,31 +6,31 @@
 //
 
 import Foundation
-import KeychainAccess
+import SimpleKeychain
 
 internal struct KeychainHelper {
     // MARK: - Constants
     private static let keychainValueKey: String = "ThumbmarkPersistentID"
     private static let serviceAttribute = "ThumbmarkKeychainService"
-    private static let keychain = Keychain(service: serviceAttribute)
+    private static let keychain = SimpleKeychain(service: serviceAttribute)
 
     // MARK: - Write
     static func upsert<T>(_ value: T, forKey key: String) where T: Codable {
         guard let data = try? JSONEncoder().encode(value) else { return }
-        keychain[data: key] = data
+        try? keychain.set(data, forKey: key)
     }
 
     // MARK: - Read
     @discardableResult static func get<T>(_ key: String) -> T? where T: Codable {
-        guard let data = keychain[data: key] else { return nil }
+        guard let data = try? keychain.data(forKey: key) else { return nil }
         guard let value: T = try? JSONDecoder().decode(T.self, from: data) else { return nil }
         return value
     }
 
     // MARK: - Delete
     static func delete(_ key: String) -> Bool {
-        try? keychain.remove(key)
-        return keychain[data: key] == nil
+        try? keychain.deleteItem(forKey: key)
+        return (try? keychain.hasItem(forKey: key)) == false
     }
 }
 

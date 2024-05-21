@@ -1,13 +1,13 @@
 {
-  "originHash" : "bbc4b05fad4db06d9862ee1052f97a08828291607a4a12ea895e13390b374687",
+  "originHash" : "0408467dc2c11cad2d9c375416c84150767ea1c913a4f0388779573956130388",
   "pins" : [
     {
-      "identity" : "keychainaccess",
+      "identity" : "simplekeychain",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
+      "location" : "https://github.com/auth0/SimpleKeychain",
       "state" : {
-        "branch" : "master",
-        "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
+        "revision" : "f082494aab8056139a4fe234c920a9f92f681aff",
+        "version" : "1.1.0"
       }
     }
   ],
