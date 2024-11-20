@@ -2,11 +2,13 @@
 
 # Thumbmark Swift 
 
-Thumbmark is the world's second best browser fingerprinting library. While not (yet?) as good, it's a free open source alternative to the market leading FingerprintJS. It is easy to use and easily extendable.
+Thumbmark is now the world's best free fingerprinting library.
 
 Thumbmark is open source (MIT).
 
 🙏 Please don't do evil. Thumbmark is meant to be used for good. Use this to prevent scammers and spammers for example. If you see this library being used for evil, please raise an issue in this repo.
+
+🕺 Join the [Thumbmark Discord channel](https://discord.gg/663uXe77)
 
 ## Installation
 ### Swift Package Manager
